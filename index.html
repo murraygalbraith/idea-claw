@@ -108,7 +108,6 @@
         /* BUNNY */
         .bunny-wrapper {
             left: 10%;
-            /* Slower, less frantic hop */
             animation: hop 5s infinite ease-in-out; 
         }
         .bunny-body {
@@ -122,10 +121,8 @@
             width: 35px; height: 35px; background: #fff;
             border-radius: 50%;
         }
-        /* Face Features */
         .bunny-eye { position: absolute; top: 12px; left: 8px; width: 4px; height: 4px; background: #333; border-radius: 50%; }
         .bunny-nose { position: absolute; top: 16px; left: 2px; width: 4px; height: 3px; background: #FFC6D9; border-radius: 50%; }
-
         .bunny-ear {
             position: absolute; top: -25px; width: 10px; height: 30px;
             background: #fff; border-radius: 50px;
@@ -183,16 +180,8 @@
 
         @keyframes sunPulse { from { transform: scale(1); } to { transform: scale(1.1); } }
         @keyframes float { 0% { transform: translateX(0); } 50% { transform: translateX(20px); } 100% { transform: translateX(0); } }
-        /* Adjusted hop to be a quick hop then wait */
-        @keyframes hop { 
-            0%, 10%, 20% { transform: translateY(0); } 
-            15% { transform: translateY(-15px); } 
-            100% { transform: translateY(0); }
-        }
-        @keyframes fly { 
-            0% { transform: translateY(0) rotate(0deg); } 
-            100% { transform: translateY(-10px) rotate(5deg); } 
-        }
+        @keyframes hop { 0%, 10%, 20% { transform: translateY(0); } 15% { transform: translateY(-15px); } 100% { transform: translateY(0); } }
+        @keyframes fly { 0% { transform: translateY(0) rotate(0deg); } 100% { transform: translateY(-10px) rotate(5deg); } }
 
 
         /* --- THE GACHA MACHINE --- */
@@ -212,13 +201,10 @@
             box-sizing: border-box;
             z-index: 10;
             transition: background-color 0.5s;
-            
-            /* Floral Pattern */
             background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60' viewBox='0 0 60 60'%3E%3Cpath fill='rgba(255,255,255,0.25)' d='M30 10 C35 10 40 15 40 20 C45 20 50 25 50 30 C50 35 45 40 40 40 C40 45 35 50 30 50 C25 50 20 45 20 40 C15 40 10 35 10 30 C10 25 15 20 20 20 C20 15 25 10 30 10 Z'/%3E%3Ccircle cx='30' cy='30' r='8' fill='rgba(255,239,150,0.4)'/%3E%3C/svg%3E");
             background-size: 50px 50px;
         }
 
-        /* Decorative "Ears" */
         .gacha-machine::before {
             content: '';
             position: absolute;
@@ -277,7 +263,6 @@
             box-sizing: border-box;
             transition: background-color 0.5s;
         }
-        
         .journal-spine {
             position: absolute; left: 0; top: 0; bottom: 0; width: 12px;
             background: rgba(0,0,0,0.1);
@@ -549,6 +534,28 @@
             padding: 8px; font-family: 'Nunito'; font-size: 0.9rem;
             margin-top: 10px; box-sizing: border-box; resize: none;
         }
+        
+        .entry-details-container {
+            margin-top: 10px;
+        }
+        .details-toggle {
+            background: none; border: 1px solid #ddd; color: #666;
+            padding: 5px 10px; border-radius: 5px; cursor: pointer;
+            font-family: 'Nunito'; font-size: 0.8rem; width: 100%;
+            text-align: left;
+        }
+        .details-content {
+            display: none;
+            padding: 10px;
+            background: #f8f8f8;
+            border-radius: 5px;
+            margin-top: 5px;
+            border: 1px dashed #ccc;
+        }
+        .details-content.show { display: block; }
+        .details-content p { font-size: 0.9rem; color: #555; margin: 5px 0; }
+        .details-content ul { padding-left: 20px; margin: 5px 0; }
+        .details-content li { font-size: 0.85rem; color: #444; margin-bottom: 5px; }
 
         /* --- KEYFRAMES --- */
         @keyframes bounceIn { 0% { transform: translateX(-50%) scale(0) rotate(180deg); opacity: 0; } 60% { transform: translateX(-50%) scale(1.1) rotate(0deg); opacity: 1; } 100% { transform: translateX(-50%) scale(1) rotate(0deg); opacity: 1; } }
@@ -690,108 +697,619 @@
 
     <script>
         // --- DATA ---
-        // NEW STRUCTURE: { text, emoji, description, steps[] }
         
         const indoorActivities = [
-            { 
-                text: "Blanket Fort", 
-                emoji: "🏰", 
-                description: "Transform the living room into a magical castle!",
-                steps: [
-                    "Gather all pillows and blankets",
-                    "Use chairs to prop up the roof",
-                    "Add fairy lights inside",
-                    "Bring snacks into the fort",
-                    "Read a book inside"
-                ]
-            },
-            { 
-                text: "Photo Scavenger Hunt", 
-                emoji: "📸", 
-                description: "Can you find and photograph all these items?",
-                steps: [
-                    "Something Blue",
-                    "Something Round",
-                    "A tiny toy",
-                    "A funny face",
-                    "Something soft",
-                    "A plant"
-                ]
-            },
-            { 
-                text: "Learn a TikTok Dance", 
-                emoji: "💃",
-                description: "Pick a fun song and learn the moves!",
-                steps: []
-            },
-            { 
-                text: "Comic Strip", 
-                emoji: "🎨",
-                description: "Draw a funny 3-panel comic.",
-                steps: [
-                    "Fold a paper into 3 sections",
-                    "Draw character 1",
-                    "Draw character 2",
-                    "Add speech bubbles"
-                ]
-            },
-            { 
-                text: "Bake Mug Cakes", 
-                emoji: "🧁",
-                description: "Make a yummy cake in the microwave.",
-                steps: [
-                    "Mix flour and sugar",
-                    "Add milk and oil",
-                    "Microwave for 1 min",
-                    "Let it cool!"
-                ]
-            }
-        ];
+  {
+    "text": "Doggy Talent Show Producer",
+    "emoji": "🐕",
+    "description": "Create and host a full talent show starring your small dog! Design tickets, make a stage, create a playlist, and teach your pup some impressive tricks.",
+    "steps": [
+      "Design colourful tickets and programmes on paper",
+      "Build a mini stage area using cushions and blankets",
+      "Create a playlist of fun background music for each 'act'",
+      "Teach your dog 2-3 new tricks using treats and patience",
+      "Film the show and add your own commentary like a real host"
+    ]
+  },
+  {
+    "text": "Musical Instrument from Rubbish",
+    "emoji": "🎵",
+    "description": "Challenge yourself to create 3 different working instruments using only recycled materials from around the house, then compose a short piece using all three.",
+    "steps": [
+      "Collect items like bottles, boxes, rubber bands, rice, and containers",
+      "Design a shaker (rice in containers), a guitar (rubber bands on a box), and a drum (upturned pot)",
+      "Test and adjust each instrument to get the best sound",
+      "Compose a 30-second piece using all three instruments",
+      "Record yourself performing it and add sound effects"
+    ]
+  },
+  {
+    "text": "Secret Language Inventor",
+    "emoji": "🔤",
+    "description": "Invent your own complete secret language or code with symbols, then write a coded treasure hunt for your family to solve.",
+    "steps": [
+      "Create 26 unique symbols for each letter of the alphabet",
+      "Make a decoder key card decorated with cool designs",
+      "Write secret messages and hide them around the house",
+      "Create a coded treasure map with cryptic clues",
+      "Set up the hunt and watch people try to crack your code"
+    ]
+  },
+  {
+    "text": "Cardboard City Architect",
+    "emoji": "🏙️",
+    "description": "Design and build an entire miniature city from cardboard boxes, complete with buildings, parks, and a transport system.",
+    "steps": [
+      "Collect cardboard boxes, tubes, and packaging materials",
+      "Sketch out a city plan with different zones (shops, parks, homes)",
+      "Cut and construct buildings, adding windows and doors",
+      "Paint and decorate each building with tiny details",
+      "Add roads, parks, and mini people to bring it to life"
+    ]
+  },
+  {
+    "text": "Science Magic Show",
+    "emoji": "🧪",
+    "description": "Learn 5 impressive science experiments that look like magic tricks, then put on a performance with dramatic music and mysterious commentary.",
+    "steps": [
+      "Research safe experiments like volcano eruptions, colour-changing milk, or static electricity tricks",
+      "Gather household materials needed for each experiment",
+      "Practice each one until it works perfectly every time",
+      "Write a theatrical script with mysterious phrases for each trick",
+      "Perform your show with dramatic music and theatrical flair"
+    ]
+  },
+  {
+    "text": "Sock Puppet Rock Band",
+    "emoji": "🧦",
+    "description": "Create a complete rock band using old socks as characters, write original songs for them, and produce a music video.",
+    "steps": [
+      "Transform 4-5 socks into band members with different personalities using buttons, yarn, and markers",
+      "Give each character a name, instrument, and backstory",
+      "Write lyrics for 2 original songs in different styles",
+      "Compose simple melodies using your real instruments or apps",
+      "Film a music video with your puppets 'performing' the songs"
+    ]
+  },
+  {
+    "text": "Dog Spa & Wellness Centre",
+    "emoji": "💆",
+    "description": "Transform a room into a luxury spa for your small dog, complete with gentle massage, grooming station, relaxation music, and healthy treats.",
+    "steps": [
+      "Set up a peaceful spa area with soft towels and calming music",
+      "Prepare a gentle brush-down and paw massage routine",
+      "Make a dog-safe treat menu (carrot sticks, apple slices)",
+      "Create a playlist of calming classical or nature sounds",
+      "Give your pup the full treatment and take photos of the experience"
+    ]
+  },
+  {
+    "text": "Time Capsule Designer",
+    "emoji": "📦",
+    "description": "Create an elaborate time capsule about your life right now to open in 5 years, including predictions, current favourites, and secret messages to your future self.",
+    "steps": [
+      "Decorate a shoebox or container with futuristic designs",
+      "Write a letter to your future self describing life right now",
+      "Include drawings, photos, current favourite song lyrics, and small objects",
+      "Make predictions about what life will be like in 5 years",
+      "Seal it dramatically and decide where it will be safely stored"
+    ]
+  },
+  {
+    "text": "Stop-Motion Animation Studio",
+    "emoji": "🎬",
+    "description": "Create a short stop-motion film using toys, craft materials, or drawn characters, complete with sound effects and music.",
+    "steps": [
+      "Choose your characters and create a simple story with beginning, middle, and end",
+      "Set up a stable filming area with good lighting",
+      "Take photos moving characters tiny amounts between each shot",
+      "Use a free app to compile photos into a video",
+      "Add dialogue, sound effects, and background music you've created"
+    ]
+  },
+  {
+    "text": "Recipe Inventor & Cookbook Author",
+    "emoji": "👩‍🍳",
+    "description": "Invent 3 completely new snack recipes, test them out, photograph the results, and create your own illustrated cookbook.",
+    "steps": [
+      "Brainstorm unique flavour combinations and creative presentations",
+      "Get permission and help for any cooking, then test your recipes",
+      "Take photos of each creation like a food magazine",
+      "Write out recipes with fun names and clear instructions",
+      "Design a cookbook cover and bind pages together with ribbon or staples"
+    ]
+  },
+  {
+    "text": "Bedroom Escape Room",
+    "emoji": "🔐",
+    "description": "Design a challenging escape room experience in your bedroom with puzzles, riddles, and hidden clues for your family to attempt.",
+    "steps": [
+      "Create a storyline for why players are 'trapped' and what they must find",
+      "Design 5-7 puzzles using locks, codes, riddles, and hidden objects",
+      "Set up clues that lead from one puzzle to the next",
+      "Test your escape room to make sure it works and takes about 20 minutes",
+      "Invite family members to attempt it and time how long they take"
+    ]
+  },
+  {
+    "text": "Fashion Designer Collection",
+    "emoji": "👗",
+    "description": "Design a complete fashion collection on paper, create mood boards, then make 2-3 wearable pieces using old clothes, fabric scraps, and creative cutting.",
+    "steps": [
+      "Choose a theme for your collection (futuristic, nature-inspired, etc.)",
+      "Sketch 8-10 outfit designs with fabric swatches and notes",
+      "Create a mood board with colours, textures, and inspiration images",
+      "Transform old t-shirts or fabric into 2-3 actual wearable pieces with safe scissors and no-sew techniques",
+      "Host a fashion show with music and dramatic walks"
+    ]
+  },
+  {
+    "text": "Radio DJ Hour",
+    "emoji": "📻",
+    "description": "Create and record your own radio show with music, interviews, dedications, and news segments, complete with jingles and sound effects.",
+    "steps": [
+      "Plan your show with segments: music, news, weather, interviews, dedications",
+      "Create catchy jingles and station identification using your voice or instruments",
+      "Write a script with jokes, interesting facts, and transitions",
+      "Record yourself hosting the show, playing music clips between segments",
+      "Share your recording with family or listen back while doing other activities"
+    ]
+  },
+  {
+    "text": "Indoor Obstacle Course Champion",
+    "emoji": "🏃",
+    "description": "Design an epic timed obstacle course throughout your house using pillows, furniture, and household items, complete with scoring system and challenges.",
+    "steps": [
+      "Map out a course using cushions to jump on, chairs to crawl under, and hallways to navigate",
+      "Add challenges like balancing books on your head or solving a quick puzzle mid-course",
+      "Create a scoring system with bonuses and penalties",
+      "Time yourself and try to beat your record",
+      "Invite family members to compete and crown a champion"
+    ]
+  },
+  {
+    "text": "Miniature Garden Terrarium",
+    "emoji": "🌱",
+    "description": "Build a tiny living world inside a jar or container with layers of soil, rocks, plants, and decorative elements to create your own ecosystem.",
+    "steps": [
+      "Find a clear container and collect small pebbles, activated charcoal, and soil",
+      "Layer materials: rocks on bottom, charcoal, then soil",
+      "Add small plants or succulents (with permission to use or buy inexpensive ones)",
+      "Decorate with tiny figures, stones, or fairy garden elements",
+      "Learn about and maintain your mini ecosystem"
+    ]
+  },
+  {
+    "text": "Comic Book Creator",
+    "emoji": "📚",
+    "description": "Write and illustrate a complete comic book with original characters, an exciting plot, and professional-looking panels and speech bubbles.",
+    "steps": [
+      "Develop main characters with unique powers, personalities, and backstories",
+      "Plot out a story with a problem, adventure, and resolution",
+      "Sketch panel layouts for 8-12 pages",
+      "Draw and ink your comic, adding speech bubbles and sound effects",
+      "Design a dramatic cover and staple pages together into a real book"
+    ]
+  },
+  {
+    "text": "Dog Photography Exhibition",
+    "emoji": "📸",
+    "description": "Take an artistic photo series of your dog in different moods, settings, and costumes, then curate a professional-style gallery exhibition.",
+    "steps": [
+      "Plan 10 different photo concepts (action shots, portraits, silly poses)",
+      "Create simple props or costumes for your dog using safe household items",
+      "Take photos experimenting with angles, lighting, and backgrounds",
+      "Select the best shots and edit them using free photo apps",
+      "Print or display photos on devices, write title cards, and host a gallery viewing"
+    ]
+  },
+  {
+    "text": "Mystery Story Podcast",
+    "emoji": "🎙️",
+    "description": "Write and record a thrilling mystery story as a podcast series with multiple episodes, sound effects, and cliffhanger endings.",
+    "steps": [
+      "Plot out a mystery with suspects, clues, and a surprising solution",
+      "Write scripts for 3-4 episodes with cliffhangers",
+      "Record yourself narrating with different voices for each character",
+      "Add sound effects using household objects or free sound apps",
+      "Edit episodes and share them with family members to solve the mystery"
+    ]
+  },
+  {
+    "text": "Science Lab: Kitchen Chemistry",
+    "emoji": "🔬",
+    "description": "Conduct 5 impressive chemistry experiments using kitchen ingredients, document each with hypothesis, method, results, and explanations.",
+    "steps": [
+      "Choose experiments like crystal growing, acid-base reactions, or density towers",
+      "Create a science journal with proper experiment format",
+      "Perform each experiment carefully, taking photos at each stage",
+      "Record what happened and research why it worked that way",
+      "Present your findings to family like a real scientist"
+    ]
+  },
+  {
+    "text": "Miniature Room Designer",
+    "emoji": "🏠",
+    "description": "Build a detailed dollhouse room in a shoebox using craft materials, complete with tiny furniture, wallpaper, flooring, and lighting.",
+    "steps": [
+      "Choose what type of room to create (bedroom, kitchen, library)",
+      "Decorate walls with patterned paper or painted designs",
+      "Construct tiny furniture from cardboard, bottle caps, and fabric scraps",
+      "Add details like tiny books, pictures, rugs, and plants",
+      "Install 'lighting' using fairy lights or LED tea lights if safe"
+    ]
+  },
+  {
+    "text": "Musical Code Composer",
+    "emoji": "🎹",
+    "description": "Invent a musical code where different notes represent letters, then compose secret messages as melodies that others must decode.",
+    "steps": [
+      "Assign each letter A-Z to a specific note or chord",
+      "Create a decoder chart showing the letter-to-note translations",
+      "Compose a melody that spells out a secret message",
+      "Record yourself playing the coded message on an instrument or app",
+      "Challenge others to decode your musical messages"
+    ]
+  },
+  {
+    "text": "Dog Training Academy",
+    "emoji": "🎓",
+    "description": "Create a complete training programme teaching your dog advanced tricks, keeping a progress journal with photos and achievement certificates.",
+    "steps": [
+      "Research 5-7 impressive tricks suitable for small dogs",
+      "Create a training schedule breaking each trick into small steps",
+      "Practice daily sessions keeping them short and positive with treat rewards",
+      "Document progress with photos and notes in a training journal",
+      "Design official certificates for each mastered trick"
+    ]
+  },
+  {
+    "text": "Yarn Art Installation",
+    "emoji": "🧶",
+    "description": "Transform a doorway or corner into a colourful art installation using yarn, string, or ribbon woven into geometric patterns.",
+    "steps": [
+      "Choose a space and get permission to temporarily attach yarn to walls",
+      "Design a pattern on paper first (zigzags, spider web, rainbow)",
+      "Use tape or removable hooks to anchor yarn at various points",
+      "Weave and layer different colours to create depth and interest",
+      "Photograph your installation from different angles, then carefully remove it"
+    ]
+  },
+  {
+    "text": "Board Game Inventor",
+    "emoji": "🎲",
+    "description": "Design, build, and playtest a completely original board game with unique rules, hand-made pieces, and professional-looking game board.",
+    "steps": [
+      "Brainstorm game concept: what's the goal and how do players win?",
+      "Design the game board on cardboard with colourful decorations",
+      "Create game pieces from buttons, coins, or craft materials",
+      "Write clear rule instructions and create cards if needed",
+      "Playtest your game, adjust rules, and host a game night"
+    ]
+  },
+  {
+    "text": "Karaoke Music Video Producer",
+    "emoji": "🎤",
+    "description": "Choose 3 favourite songs, learn the lyrics perfectly, then produce professional-looking music videos with choreography, costumes, and special effects.",
+    "steps": [
+      "Select songs and practise until you know every word",
+      "Plan different settings, costumes, and props for each song",
+      "Choreograph simple dance moves or gestures for key moments",
+      "Film yourself performing with different camera angles",
+      "Edit videos adding titles, effects, or background scenes using free apps"
+    ]
+  }
+];
 
         const outdoorActivities = [
-            { 
-                text: "Leaf Hunt", 
-                emoji: "🍁", 
-                description: "Find 3 different kinds of leaves in the garden.",
-                steps: [
-                    "Find a big leaf",
-                    "Find a crunchy leaf",
-                    "Find a green leaf"
-                ]
-            },
-            { 
-                text: "Sidewalk Chalk", 
-                emoji: "🖍️",
-                description: "Create a masterpiece on the driveway.",
-                steps: []
-            },
-            { 
-                text: "Garden Race", 
-                emoji: "🏃‍♀️",
-                description: "Run 3 laps around the garden as fast as you can!",
-                steps: []
-            },
-            { 
-                text: "Daisy Chain", 
-                emoji: "🌼",
-                description: "Make a necklace out of flowers.",
-                steps: [
-                    "Pick gentle flowers with long stems",
-                    "Make a slit in the stem",
-                    "Thread the next flower through",
-                    "Connect the ends"
-                ]
-            },
-            { 
-                text: "Bug Safari", 
-                emoji: "🐞",
-                description: "Find a bug, watch what it does, and give it a name!",
-                steps: []
-            }
-        ];
+  {
+    "text": "Nature Symphony Composer",
+    "emoji": "🎵",
+    "description": "Explore your garden or local park collecting natural objects that make sounds, then compose and perform an original outdoor symphony.",
+    "steps": [
+      "Gather sound-making items: sticks for drumming, rocks to click, leaves to rustle, seed pods to shake",
+      "Experiment with different materials to discover unique sounds",
+      "Compose a 2-minute piece with different movements (soft, loud, rhythmic, chaotic)",
+      "Mark out a performance space and arrange your 'instruments'",
+      "Perform and record your nature symphony, inviting your dog to be your audience"
+    ]
+  },
+  {
+    "text": "Dog Agility Course Champion",
+    "emoji": "🏆",
+    "description": "Design and build a professional-level agility course in your backyard using household items, then train your dog to complete it for time.",
+    "steps": [
+      "Set up obstacles: jump poles from brooms, weave poles from stakes, tunnels from boxes",
+      "Create a course map showing the order of obstacles",
+      "Train your dog on each obstacle separately with treats and encouragement",
+      "Practice the full course, timing each attempt",
+      "Film your dog's best run and create a championship ceremony with medals"
+    ]
+  },
+  {
+    "text": "Botanical Art Gallery",
+    "emoji": "🌸",
+    "description": "Collect interesting leaves, flowers, and petals to create nature art pieces using pressing, arranging, and natural dye techniques.",
+    "steps": [
+      "Gather diverse plant materials in different colours, shapes, and textures",
+      "Press flowers and leaves between heavy books for 3-5 days",
+      "Create artwork by arranging pressed plants on card or paper",
+      "Experiment with flower pounding to create natural prints",
+      "Display your gallery on a fence or wall with titles for each piece"
+    ]
+  },
+  {
+    "text": "Outdoor Theatre Production",
+    "emoji": "🎭",
+    "description": "Write and perform an original play outdoors using nature as your stage, with your dog as a co-star and natural props.",
+    "steps": [
+      "Write a short script with adventure, comedy, or mystery themes",
+      "Scout for the perfect outdoor stage location with natural features",
+      "Create costumes from outdoor-safe materials and found objects",
+      "Rehearse your play, teaching your dog their 'role' (even if just sitting on cue)",
+      "Perform for family with full dramatic flair and natural sound effects"
+    ]
+  },
+  {
+    "text": "Cloud Photography Project",
+    "emoji": "☁️",
+    "description": "Become a cloud scientist documenting different cloud types, creating a photography journal with artistic shots and scientific observations.",
+    "steps": [
+      "Research the main cloud types (cumulus, stratus, cirrus, etc.)",
+      "Set up a comfortable observation spot with notebook and camera",
+      "Photograph clouds throughout the day, noting shapes and patterns",
+      "Write creative descriptions of what each cloud resembles",
+      "Create a cloud identification guide with your best photos and facts"
+    ]
+  },
+  {
+    "text": "Fairy Garden Architect",
+    "emoji": "🧚",
+    "description": "Design and build an intricate fairy garden in your yard with tiny houses, pathways, furniture, and magical details using natural materials.",
+    "steps": [
+      "Choose a special spot under a tree or in a garden bed",
+      "Collect natural materials: twigs, bark, stones, moss, flowers",
+      "Build miniature structures like houses from bark and stick furniture",
+      "Create pathways with pebbles and plant tiny gardens",
+      "Add magical touches like mirrors for ponds or painted stones as stepping stones"
+    ]
+  },
+  {
+    "text": "Bird Call Musician",
+    "emoji": "🐦",
+    "description": "Learn to identify and mimic 5 different bird calls, then create a musical composition incorporating these sounds with your own instruments.",
+    "steps": [
+      "Research common local birds and listen to their calls online",
+      "Sit quietly outdoors at dawn or dusk listening for bird songs",
+      "Practice mimicking each call until you can do it accurately",
+      "Record real bird calls and your imitations for comparison",
+      "Compose a piece alternating between bird calls and musical instrument responses"
+    ]
+  },
+  {
+    "text": "Geocaching Treasure Creator",
+    "emoji": "📍",
+    "description": "Create an elaborate treasure hunt using coordinates, maps, and hidden waterproof containers with surprises for others to discover.",
+    "steps": [
+      "Hide 5-7 small waterproof containers in interesting outdoor spots",
+      "Create detailed maps or write coordinate clues for each location",
+      "Include small treasures, puzzles, or riddles in each container",
+      "Design a master clue sheet with cryptic hints",
+      "Guide family members on the treasure hunt, timing how long it takes them"
+    ]
+  },
+  {
+    "text": "Nature Colour Palette Collector",
+    "emoji": "🎨",
+    "description": "Hunt for every colour of the rainbow in nature, collecting samples to create stunning gradient displays and colour theory experiments.",
+    "steps": [
+      "Bring collection bags or containers for each colour family",
+      "Search for natural items in reds, oranges, yellows, greens, blues, purples",
+      "Arrange findings in gradients from light to dark",
+      "Create colour wheels or patterns with your natural materials",
+      "Photograph your arrangements and learn about why certain colours are rare in nature"
+    ]
+  },
+  {
+    "text": "Outdoor Science Lab",
+    "emoji": "🔬",
+    "description": "Set up a backyard laboratory conducting experiments on plant growth, insect behaviour, soil composition, and weather patterns.",
+    "steps": [
+      "Establish different experiment stations for various scientific inquiries",
+      "Plant seeds in different conditions to test growth variables",
+      "Create observation stations for insects using magnifying glasses",
+      "Test soil samples from different areas for pH and composition",
+      "Keep a detailed science journal with daily observations and sketches"
+    ]
+  },
+  {
+    "text": "Dog Adventure Photographer",
+    "emoji": "📷",
+    "description": "Take your dog on a photographic adventure, capturing action shots in different outdoor settings to create an exciting photo story.",
+    "steps": [
+      "Plan 5 different outdoor locations (garden, park, path, interesting backgrounds)",
+      "Pack treats and toys to help your dog pose or create action moments",
+      "Take photos from creative angles: ground-level, above, close-ups, wide shots",
+      "Capture your dog running, jumping, exploring, and resting",
+      "Sequence photos into a story with captions describing your adventure"
+    ]
+  },
+  {
+    "text": "Rock Art Exhibition",
+    "emoji": "🪨",
+    "description": "Collect interesting rocks and transform them into art pieces using painting, stacking, and arranging techniques to create an outdoor gallery.",
+    "steps": [
+      "Gather rocks of various sizes, shapes, and textures",
+      "Clean and dry your rock collection thoroughly",
+      "Paint detailed designs: animals, patterns, inspirational words, or characters",
+      "Create rock cairns (balanced stacks) or rock mandalas (circular patterns)",
+      "Arrange your rock art in an outdoor display with labels and descriptions"
+    ]
+  },
+  {
+    "text": "Sundial Time Keeper",
+    "emoji": "⏰",
+    "description": "Build a working sundial to tell time using the sun's shadow, then track its accuracy throughout the day with proper calibration.",
+    "steps": [
+      "Research sundial designs and choose one to build",
+      "Gather materials: a stick or rod, flat surface, stones or markers",
+      "Place your gnomon (stick) and mark where shadows fall each hour",
+      "Calibrate your sundial by checking it against a real clock",
+      "Decorate your sundial and use it to tell time for a full sunny day"
+    ]
+  },
+  {
+    "text": "Nature Weaving Loom",
+    "emoji": "🕸️",
+    "description": "Build a frame loom from sticks and create woven art using grasses, flowers, leaves, and found natural fibres.",
+    "steps": [
+      "Construct a loom frame using four sturdy sticks tied together",
+      "String vertical threads (warp) using yarn or string",
+      "Collect flexible natural materials: long grasses, thin vines, strips of bark",
+      "Weave materials over and under the warp threads, creating patterns",
+      "Add flowers, feathers, or leaves for colour and texture"
+    ]
+  },
+  {
+    "text": "Insect Hotel Builder",
+    "emoji": "🐛",
+    "description": "Construct an elaborate hotel for beneficial insects using recycled materials and natural elements, then observe which guests check in.",
+    "steps": [
+      "Gather materials: wooden box, bamboo tubes, pine cones, bark, hollow stems",
+      "Create different chambers for various insects (bees, ladybirds, lacewings)",
+      "Stack and arrange materials tightly so they won't fall out",
+      "Place your hotel in a quiet garden spot facing morning sun",
+      "Keep an observation log noting which insects move in and their behaviour"
+    ]
+  },
+  {
+    "text": "Outdoor Music Recording Studio",
+    "emoji": "🎤",
+    "description": "Record original songs or musical performances in different outdoor acoustics, creating an album showcasing nature's sound effects.",
+    "steps": [
+      "Scout locations with interesting acoustics: under trees, near water, in open spaces",
+      "Write or choose songs to perform in each location",
+      "Record yourself singing or playing instruments with natural background sounds",
+      "Experiment with how different locations change your sound",
+      "Compile recordings into an album with nature-inspired titles for each track"
+    ]
+  },
+  {
+    "text": "Shadow Puppet Theatre",
+    "emoji": "🌓",
+    "description": "Create elaborate shadow puppets and put on performances using the sun as your light source, with a sheet as your screen.",
+    "steps": [
+      "Cut detailed puppet shapes from cardboard and attach to sticks",
+      "Hang a white sheet or light fabric between two points",
+      "Position sheet so the sun casts clear shadows through it",
+      "Write a story and rehearse puppet movements",
+      "Perform your shadow show with voices and sound effects, with audience on the shadow side"
+    ]
+  },
+  {
+    "text": "Backyard Camping Adventure",
+    "emoji": "⛺",
+    "description": "Plan and execute a full camping experience in your backyard with tent setup, campfire cooking, stargazing, and survival skills.",
+    "steps": [
+      "Set up a tent or build a fort shelter using tarps and ropes",
+      "Plan a camping menu and help prepare safe outdoor-friendly meals",
+      "Create a campfire circle (real or pretend) for storytelling",
+      "Learn constellation identification and create a star map",
+      "Pack a survival kit and practice skills like knot-tying and compass reading"
+    ]
+  },
+  {
+    "text": "Mud Kitchen Masterchef",
+    "emoji": "🍰",
+    "description": "Set up an outdoor mud kitchen creating elaborate 'dishes' using mud, water, flowers, and natural ingredients with restaurant-quality presentation.",
+    "steps": [
+      "Establish your kitchen area with pots, pans, utensils, and work surfaces",
+      "Collect natural ingredients: mud, sand, grass, flower petals, seeds, water",
+      "Create a menu of sophisticated dishes with creative names",
+      "Make elaborate mud creations decorated with natural garnishes",
+      "Photograph each dish like a food magazine and write recipe cards"
+    ]
+  },
+  {
+    "text": "Weather Station Scientist",
+    "emoji": "🌡️",
+    "description": "Build working weather instruments to measure temperature, rainfall, wind speed, and direction, keeping detailed meteorological records.",
+    "steps": [
+      "Construct instruments: rain gauge from bottles, wind vane from cardboard, wind sock from fabric",
+      "Set up your weather station in an open area",
+      "Take measurements at the same times daily",
+      "Record data in charts and graphs showing patterns",
+      "Make weather predictions based on your observations"
+    ]
+  },
+  {
+    "text": "Nature Scavenger Hunt Designer",
+    "emoji": "🔍",
+    "description": "Create an expert-level scavenger hunt with cryptic clues, challenges, and point systems based on natural items and outdoor observations.",
+    "steps": [
+      "Scout your outdoor area noting interesting natural features and hidden spots",
+      "Write creative clues requiring observation skills and problem-solving",
+      "Assign point values based on difficulty (rare items worth more)",
+      "Include photo challenges and collection tasks",
+      "Run the hunt for family members and crown a winner"
+    ]
+  },
+  {
+    "text": "Stick Fort Engineering",
+    "emoji": "🏰",
+    "description": "Design and build an impressive fort structure using sticks, branches, and natural materials, incorporating architectural principles.",
+    "steps": [
+      "Sketch your fort design with structural supports and walls",
+      "Collect sturdy branches and sticks of various lengths",
+      "Build a frame using triangular supports for strength",
+      "Weave smaller branches between frame for walls",
+      "Add a roof using large leaves, grass, or lightweight branches, then decorate your creation"
+    ]
+  },
+  {
+    "text": "Outdoor Art Installation",
+    "emoji": "🎨",
+    "description": "Create a large-scale temporary art installation using natural materials arranged in patterns, spirals, or sculptures for others to discover.",
+    "steps": [
+      "Choose a theme or pattern (spiral, mandala, animal shape, abstract design)",
+      "Collect materials in coordinating colours and sizes",
+      "Work from the centre outward or use a grid system for complex designs",
+      "Create dramatic contrasts with light and dark natural materials",
+      "Photograph your installation from different heights and angles before weather changes it"
+    ]
+  },
+  {
+    "text": "Dog Park Olympics",
+    "emoji": "🥇",
+    "description": "Organise a full Olympic games for your dog with multiple events, scoring system, medal ceremonies, and opening/closing festivities.",
+    "steps": [
+      "Design 5-7 events: sprint races, fetch accuracy, trick performance, obstacle course, stay challenge",
+      "Create official score cards and timing systems",
+      "Make medals from cardboard and ribbon",
+      "Hold opening ceremony with your dog as the athlete",
+      "Run each event, record scores, and host a medal ceremony with photos"
+    ]
+  },
+  {
+    "text": "Night Nature Detective",
+    "emoji": "🔦",
+    "description": "Conduct supervised evening investigations discovering nocturnal wildlife, night-blooming flowers, and learning about animals' nighttime activities.",
+    "steps": [
+      "Research what animals are active at dusk in your area",
+      "Prepare investigation kit: torch, notebook, camera, magnifying glass",
+      "Observe quietly at dusk for animal activity and unusual sounds",
+      "Look for signs of nocturnal animals: tracks, droppings, disturbed earth",
+      "Document findings with sketches, photos, and written observations in a detective's case file"
+    ]
+  }
+];
 
         let currentActivities = indoorActivities; // Default
         let currentMode = 'indoor'; // Track mode
+        
+        // --- RANDOMNESS IMPROVEMENT ---
+        // Store last picked index to avoid immediate repeats
+        let lastActivityIndex = -1;
 
         const colors = ['#FF9AA2', '#FFB7B2', '#FFDAC1', '#E2F0CB', '#B5EAD7', '#C7CEEA'];
 
@@ -822,6 +1340,9 @@
         // --- MODE SELECTION ---
         function selectMode(mode) {
             currentMode = mode;
+            // Reset random history on mode switch
+            lastActivityIndex = -1;
+            
             if (mode === 'outdoor') {
                 document.body.classList.add('outdoor');
                 currentActivities = outdoorActivities;
@@ -869,6 +1390,18 @@
         }
 
         fillMachine();
+
+        // --- HELPER: GET RANDOM ACTIVITY WITHOUT REPEAT ---
+        function getRandomActivity() {
+            // Simple logic: keep picking until different from last time
+            let newIndex;
+            do {
+                newIndex = Math.floor(Math.random() * currentActivities.length);
+            } while (newIndex === lastActivityIndex && currentActivities.length > 1);
+            
+            lastActivityIndex = newIndex;
+            return currentActivities[newIndex];
+        }
 
         // --- GAME LOGIC ---
         function playGame() {
@@ -949,8 +1482,8 @@
         }
 
         function showResult() {
-            // Pick random activity based on CURRENT MODE
-            currentActivity = currentActivities[Math.floor(Math.random() * currentActivities.length)];
+            // Use new helper for better randomness
+            currentActivity = getRandomActivity();
             
             // Populate Modal
             activityTitle.innerText = currentActivity.text;
@@ -1009,7 +1542,7 @@
             resultCard.style.border = "6px solid #FFD700"; 
             activityTitle.innerText = "YAY! HAVE FUN!";
             activityTitle.style.color = "#FF6B8B";
-            activityDetails.innerHTML = ''; // Hide details on accept screen to keep it clean
+            activityDetails.innerHTML = ''; // Hide details on accept screen
             
             targetCapsuleElement.remove();
             heldCapsule.style.display = 'none';
@@ -1029,10 +1562,13 @@
 
         // --- JOURNAL LOGIC ---
         function addToJournal(activity) {
+            // Create entry with ALL details
             const entry = {
                 id: Date.now(),
                 text: activity.text,
                 emoji: activity.emoji,
+                description: activity.description || "",
+                steps: activity.steps || [],
                 date: new Date().toLocaleDateString(),
                 rating: 0,
                 note: ""
@@ -1069,15 +1605,42 @@
                     starsHtml += `<span onclick="rateEntry(${entry.id}, ${i})">${i <= entry.rating ? '★' : '☆'}</span>`;
                 }
 
+                // Create instructions HTML if available
+                let instructionsHtml = '';
+                if(entry.description || (entry.steps && entry.steps.length > 0)) {
+                    let stepsList = '';
+                    if(entry.steps && entry.steps.length > 0) {
+                        stepsList = '<ul>' + entry.steps.map(s => `<li>${s}</li>`).join('') + '</ul>';
+                    }
+                    
+                    instructionsHtml = `
+                        <div class="entry-details-container">
+                            <button class="details-toggle" onclick="toggleEntryDetails(this)">📜 View Instructions</button>
+                            <div class="details-content">
+                                <p><strong>${entry.description}</strong></p>
+                                ${stepsList}
+                            </div>
+                        </div>
+                    `;
+                }
+
                 div.innerHTML = `
                     <div class="entry-date">${entry.date}</div>
                     <div class="entry-title">${entry.emoji} ${entry.text}</div>
+                    ${instructionsHtml}
                     <div class="star-rating">${starsHtml}</div>
                     <textarea class="journal-note" placeholder="How was it? Write a note..." onchange="updateNote(${entry.id}, this.value)">${entry.note}</textarea>
                 `;
                 list.appendChild(div);
             });
         }
+
+        // Helper to toggle details in journal
+        window.toggleEntryDetails = (btn) => {
+            const content = btn.nextElementSibling;
+            content.classList.toggle('show');
+            btn.innerText = content.classList.contains('show') ? '🔼 Hide Instructions' : '📜 View Instructions';
+        };
 
         window.rateEntry = (id, rating) => {
             const entry = journalEntries.find(e => e.id === id);
