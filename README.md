@@ -1,4 +1,10 @@
+
+<img width="1246" height="739" alt="party-time" src="https://github.com/user-attachments/assets/7c020ad4-2f74-4d4b-aaa8-8abb56eb3ff6" />
+
+
+
 **What Even Is This?**
+
 This is a Parental Obligation Offloading Protocol (PooP) disguised as a cute HTML5 game. Obvs
 
 It's a digital Claw Machine. 
@@ -10,7 +16,9 @@ The capsule opens and tells the child to "Build a Fort" or "Go Find a Cool Rock.
 My daughter thinks it's magic. It's actually a random number generator created by an LLM, so she's not wrong.
 
 **Features**
-The Grand Illusion of Choice: The machine decides our fate. 
+
+The Grand Illusion of Choice: 
+The machine decides our fate. 
 
 If the machine says we are building a "Sock Puppet Yacht Rock Band," we are building a Sock Puppet Yacht Rock Band. 
 I don't make the rules, kiddo. We live in the algorithm, now.
@@ -21,16 +29,21 @@ I don't make the rules, kiddo. We live in the algorithm, now.
 - 🌳 Outdoor Mode: For when the child's mother is present and insisting that physical activity is still somehow relevant to survival.
 
 **Token Economy:**
+
 Limits the game to 5 tries per day. 
 This teaches the child important life lessons like *scarcity*, while preventing her from re-rolling until she gets "Eat Ice Cream."
 
 **The "Journal":** 
+
 Saves completed activities to localStorage. 
 The LLM assures me these journal entries serve as legal evidence of being an Engaged Father™ NOT THAT I NEED IT AMIRITE!?
 
 **Tech Stack**
+
 - HTML/CSS/Desperation
 - Zero Dependencies: Because npm install takes too long and the kid won't wait.
+
+---
 
 **How to be an awesome Dad for approx 18 seconds**
 1. Download index.html.
